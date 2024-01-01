@@ -98,8 +98,41 @@ void test_SingleLinkedList(void)
         listSize--;
     }
 
-    TEST_ASSERT_NULL_MESSAGE(InsertNodeToSll(10, 0), "cannot insert into an empty list");
 
+    newVal = 10;
+    (void)AddNodeToSll(newVal);
+    (void)InsertNodeToSll(9, 0);
+    (void)InsertNodeToSll(11, 1);
+    (void)InsertNodeToSll(13, 2);
+    (void)InsertNodeToSll(12, 2);
+    listSize = GetSllListSize();
+    TEST_ASSERT_EQUAL_UINT32_MESSAGE(5, listSize, "incorrect size");
+    current = GetSllHead();
+    while (current != NULL_PTR)
+    {
+        /* there should be 5 values in the list [9, 10, 11, 12, 13] */
+        if (listSize == 5) {
+            /* first value should be 9 */
+            TEST_ASSERT_EQUAL_INT16_MESSAGE(9, current->data, "incorrect value after add");
+        } else if (listSize == 4) {
+            /* second value should be 10 */
+            TEST_ASSERT_EQUAL_INT16_MESSAGE(10, current->data, "incorrect value after add");
+        } else if (listSize == 3) {
+            /* third value should be 11 */
+            TEST_ASSERT_EQUAL_INT16_MESSAGE(11, current->data, "incorrect value after add");
+        } else if (listSize == 2) {
+            /* fourth value should be 12 */
+            TEST_ASSERT_EQUAL_INT16_MESSAGE(12, current->data, "incorrect value after add");
+        } else if (listSize == 1) {
+            /* fifth value should be 13 */
+            TEST_ASSERT_EQUAL_INT16_MESSAGE(13, current->data, "incorrect value after add");
+        } else {
+            TEST_ASSERT_MESSAGE(0, "Should not be reached");
+        }
+
+        current = current->next;
+        listSize--;
+    }
 }
 
 

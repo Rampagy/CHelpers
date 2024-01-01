@@ -84,6 +84,11 @@ int8_t RemoveNodeFromSll(int16_t d)
  */
 SllNode_t* InsertNodeToSll(int16_t d, uint32_t index)
 {
+    if (index == 0)
+    {
+        return AddNodeToSll(d);
+    }
+
     SllNode_t* current = sll_head;
     while (current != NULL_PTR && index > 0)
     {
@@ -91,7 +96,7 @@ SllNode_t* InsertNodeToSll(int16_t d, uint32_t index)
         current = current->next;
     }
 
-    if (index > 0 || sll_head == NULL_PTR) 
+    if (index > 0 || current == NULL_PTR) 
     {
         /* invalid insertion index */
         return NULL_PTR;
