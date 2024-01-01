@@ -26,10 +26,11 @@ void test_SingleLinkedList(void)
 {
     int16_t newVal = 5;
     uint32_t listSize = 0;
-    SllNode_t* head = AddNodeToSll(newVal);
-    SllNode_t* current = head;
+    (void)AddNodeToSll(newVal);
+    SllNode_t* current = GetSllHead();
 
-    TEST_ASSERT_EQUAL_size_t_MESSAGE(1, GetSllListSize(), "incorrect size");
+    TEST_ASSERT_EQUAL_UINT32_MESSAGE(1, GetSllListSize(), "incorrect size");
+    current = GetSllHead();
     while (current != NULL_PTR)
     {
         /* there should only be 1 value in the list and it should have a value of 5 */
@@ -38,9 +39,10 @@ void test_SingleLinkedList(void)
     }
 
     newVal = 22;
-    head = AddNodeToSll(newVal);
+    (void)AddNodeToSll(newVal);
     listSize = GetSllListSize();
-    TEST_ASSERT_EQUAL_size_t_MESSAGE(2, listSize, "incorrect size");
+    TEST_ASSERT_EQUAL_UINT32_MESSAGE(2, listSize, "incorrect size");
+    current = GetSllHead();
     while (current != NULL_PTR)
     {
         /* there should be 2 values in the list [22, 5] */
@@ -53,10 +55,51 @@ void test_SingleLinkedList(void)
         } else {
             TEST_ASSERT_MESSAGE(0, "Should not be reached");
         }
-        
+
         current = current->next;
         listSize--;
     }
+
+
+    TEST_ASSERT_EQUAL_INT8_MESSAGE(1, RemoveNodeFromSll(5), "return value is incorrect");
+    listSize = GetSllListSize();
+    TEST_ASSERT_EQUAL_UINT32_MESSAGE(1, listSize, "incorrect size");
+    current = GetSllHead();
+    while (current != NULL_PTR)
+    {
+        /* there should only be 1 value in the list and it should have a value of 22 */
+        TEST_ASSERT_EQUAL_INT16_MESSAGE(22, current->data, "incorrect value after remove");
+        current = current->next;
+    }
+
+
+    TEST_ASSERT_EQUAL_INT8_MESSAGE(1, RemoveNodeFromSll(22), "return value is incorrect");
+    listSize = GetSllListSize();
+    TEST_ASSERT_EQUAL_UINT32_MESSAGE(0, listSize, "incorrect size");
+    current = GetSllHead();
+    while (current != NULL_PTR)
+    {
+        /* there shouldn't be any values in the list */
+        TEST_ASSERT_MESSAGE(0, "list should not contain any values");
+        current = current->next;
+        listSize--;
+    }
+
+
+    TEST_ASSERT_EQUAL_INT8_MESSAGE(0, RemoveNodeFromSll(22), "return value is incorrect");
+    listSize = GetSllListSize();
+    TEST_ASSERT_EQUAL_UINT32_MESSAGE(0, listSize, "incorrect size");
+    current = GetSllHead();
+    while (current != NULL_PTR)
+    {
+        /* there shouldn't be any values in the list */
+        TEST_ASSERT_MESSAGE(0, "list should not contain any values");
+        current = current->next;
+        listSize--;
+    }
+
+    TEST_ASSERT_NULL_MESSAGE(InsertNodeToSll(10, 0), "cannot insert into an empty list");
+
 }
 
 
