@@ -1,4 +1,6 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include <stdint.h>
 
 #include "unity/unity.h"
 #include "SingleLinkedList.h"
@@ -22,7 +24,39 @@ void test_DoubleLinkedList(void)
 
 void test_SingleLinkedList(void)
 {
-    TEST_ASSERT_UINT8_WITHIN_MESSAGE(0, 1, 1, "failed");
+    int16_t newVal = 5;
+    uint32_t listSize = 0;
+    SllNode_t* head = AddNodeToSll(newVal);
+    SllNode_t* current = head;
+
+    TEST_ASSERT_EQUAL_size_t_MESSAGE(1, GetSllListSize(), "incorrect size");
+    while (current != NULL_PTR)
+    {
+        /* there should only be 1 value in the list and it should have a value of 5 */
+        TEST_ASSERT_EQUAL_INT16_MESSAGE(5, current->data, "incorrect value after add");
+        current = current->next;
+    }
+
+    newVal = 22;
+    head = AddNodeToSll(newVal);
+    listSize = GetSllListSize();
+    TEST_ASSERT_EQUAL_size_t_MESSAGE(2, listSize, "incorrect size");
+    while (current != NULL_PTR)
+    {
+        /* there should be 2 values in the list [22, 5] */
+        if (listSize == 2) {
+            /* first value should be 22 */
+            TEST_ASSERT_EQUAL_INT16_MESSAGE(22, current->data, "incorrect value after add");
+        } else if (listSize == 1) {
+            /* second value should be 5 */
+            TEST_ASSERT_EQUAL_INT16_MESSAGE(5, current->data, "incorrect value after add");
+        } else {
+            TEST_ASSERT_MESSAGE(0, "Should not be reached");
+        }
+        
+        current = current->next;
+        listSize--;
+    }
 }
 
 
